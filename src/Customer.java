@@ -2,6 +2,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Customer {
     private int id;
@@ -10,11 +11,9 @@ public class Customer {
     private Cart cart;
     static Scanner sc = new Scanner(System.in);
 
-    public Customer(int id,String username, String password, String email, String phone, MailBox mailBox) {
-        this.cart = null;
+    public Customer(int id,String username, String password, String email, String phone) {
         this.email = email;
         this.id = id;
-        this.mailBox = mailBox;
         this.password = password;
         this.phone = phone;
         this.username = username;
@@ -216,6 +215,27 @@ public class Customer {
         }
     }
 
+    public Customer register(String username, String password,String email, String phone){
+        ManagementCustomer manaCus = new ManagementCustomer();
+        manaCus.importTo(".\\Customer.txt");
+        List<Customer> listCus = new ArrayList<>();
+        listCus = manaCus.getListCus();
+        for(Customer cus : listCus){
+            if(username.equals(cus.getUsername())){
+                System.err.println("The username "+username+" has been used!");
+                return null;
+            }else if(!validatePassword(password)){
+                return null;
+            }else if (!validateEmail(email)) {
+                return null;
+            }else if(!validatePhoneNumber(phone)){
+                return null;
+            }
+        }
+        int id = ThreadLocalRandom.current().nextInt(1000,9999);
+        Customer newCus = new Customer(id,username,password,email,phone);
+        return newCus;
+    }
 
     public void menuForCustomer(){
         boolean c =true;
@@ -299,14 +319,14 @@ public class Customer {
                         }
                         break;
                     case 6:
-
+                        
                         break;
                     default:
                         System.out.println("Exit!");
                         c = false;
                 }
             } catch (Exception e) {
-                System.out.println("Invalid input! Please enter number from 0 to 4 to use the application!");
+                System.out.println("Invalid input! Please enter number from 0 to 6 to use the application!");
                 sc.next();
             }
         }

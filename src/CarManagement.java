@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CarManagement implements Modify<Car> {
-    private List<Car> cars = new ArrayList<>();
+    private List<Car> cars ;
 
     @Override
     public void add(Car car){

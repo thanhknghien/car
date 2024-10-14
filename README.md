@@ -27,7 +27,7 @@ I.Tổng quan về ứng dụng:
     )
 II.Thiết kế Class:
     - InterFace: Modify{
-        method: add, edit, delete, import, export, view
+        method: add, edit, delete, import, export
     }
     -Car{
         ( id: int,
