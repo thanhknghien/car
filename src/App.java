@@ -1,4 +1,6 @@
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -7,6 +9,7 @@ public class App {
     public static void logIn() {
         boolean c = true;
         while(c){
+            ManagementCustomer manaCus = new ManagementCustomer();
             System.out.println("----------LOG IN----------");
             System.out.println("1. Log in.");
             System.out.println("2. Register.");
@@ -18,23 +21,38 @@ public class App {
                 switch (choice) {
                     case 1:
                         System.out.print("User name: ");
-                        sc.next();
+                        
                         String username = sc.nextLine();
                         System.out.print("Password: ");
                         String password = sc.nextLine();
-                        if("admin".equals(username)||"admin123".equals(password)){
+                        if("admin".equals(username) && "admin123".equals(password)){
                             System.out.println("Hello Admin!");
                             //call admin method
                             c = false;    
                         }else{
-                            //check if user is not have account
-                            
+                            manaCus.importTo("Customer.txt");
+                        List<Customer> listCus = manaCus.getListCus();
+                        boolean found = false;
+
+                        for (Customer cus : listCus) {
+                            // Check if both username and password match
+                            if (username.equals(cus.getUsername()) && password.equals(cus.getPassword())) {
+                                System.out.println("Login successfully!");
+                                cus.menuForCustomer();
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (!found) {
+                            System.out.println("Invalid username or password. Try again!");
+                        }
                         }
                         break;
                     case 2:
                         boolean z = true;
                         Customer newCus = new Customer();
-                        ManagementCustomer manaCus = new ManagementCustomer();
+                        
                         while(z){
                             System.err.print("Enter username: "); String name = App.sc.nextLine();
                             System.err.println(name);
@@ -47,9 +65,9 @@ public class App {
                                 continue;
                             }
                             System.out.println("Successfully! Hello "+name+"!Please log in!");
-                            manaCus.importTo(".\\Customer.txt");
+                            manaCus.importTo("Customer.txt");
                             manaCus.add(newCus);
-                            manaCus.exportFrom(".\\Customer.txt");
+                            manaCus.exportFrom("Customer.txt");
                             break;
                         }
                         break;
@@ -66,16 +84,16 @@ public class App {
 
     public static void main(String[] args) throws Exception {
 
-        /*CarManagement listCar = new CarManagement();
+        CarManagement listCar = new CarManagement();
         List<Car> list = new ArrayList<Car>();
-        listCar.importTo(".\\Car.txt");
+        listCar.importTo("Car.txt");
         ManagementCustomer manaCus = new ManagementCustomer();
-        manaCus.importTo(".\\Customer.txt");
+        manaCus.importTo("Customer.txt");
         List<Customer> listCus = new ArrayList<>();
         listCus = manaCus.getListCus();
         for(Customer cus : listCus){
             System.out.println(cus);
-        }*/
+        }
         App.logIn();
 
     }
